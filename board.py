@@ -45,6 +45,7 @@ class Board:
 
     def __init__(self) -> None:
         self.territories: Dict[str, Territory] = {}
+        self._initialize_board()
 
     # --------------------------------------------------
     # Territory management
@@ -142,3 +143,95 @@ class Board:
     def unoccupied_count(self) -> int:
         return self.territory_count() - self.occupied_count()
       
+    # --------------------------------------------------
+    # Board Initialization
+    # --------------------------------------------------
+
+    def _initialize_board(self) -> None:
+        """Create all 42 standard Risk territories."""
+
+        continents = {
+            "North America": [
+                "Alaska",
+                "Northwest Territory",
+                "Greenland",
+                "Alberta",
+                "Ontario",
+                "Quebec",
+                "Western United States",
+                "Eastern United States",
+                "Central America",
+            ],
+            "South America": [
+                "Venezuela",
+                "Peru",
+                "Brazil",
+                "Argentina",
+            ],
+            "Europe": [
+                "Iceland",
+                "Scandinavia",
+                "Ukraine",
+                "Great Britain",
+                "Northern Europe",
+                "Western Europe",
+                "Southern Europe",
+            ],
+            "Africa": [
+                "North Africa",
+                "Egypt",
+                "East Africa",
+                "Congo",
+                "South Africa",
+                "Madagascar",
+            ],
+            "Asia": [
+                "Ural",
+                "Siberia",
+                "Yakutsk",
+                "Kamchatka",
+                "Irkutsk",
+                "Mongolia",
+                "Japan",
+                "Afghanistan",
+                "Middle East",
+                "India",
+                "Siam",
+                "China",
+            ],
+            "Australia": [
+                "Indonesia",
+                "New Guinea",
+                "Western Australia",
+                "Eastern Australia",
+            ],
+        }
+
+        for continent, territories in continents.items():
+            for territory in territories:
+                self.add_territory(territory, continent)
+
+    # --------------------------------------------------
+    # Queries
+    # --------------------------------------------------
+
+    def territories_in_continent(self, continent: str):
+        return [
+            territory
+            for territory in self.territories.values()
+            if territory.continent == continent
+        ]
+
+    def all_territories(self):
+        return list(self.territories.values())
+
+    def territory_names(self):
+        return sorted(self.territories.keys())
+
+    def continent_names(self):
+        return sorted(
+            {
+                territory.continent
+                for territory in self.territories.values()
+            }
+        )
