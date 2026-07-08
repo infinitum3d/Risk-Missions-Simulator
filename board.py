@@ -48,7 +48,6 @@ class Board:
     def __init__(self) -> None:
         self.territories: Dict[str, Territory] = {}
         self.adjacency = {}
-
         self._initialize_board()
         self._initialize_adjacency()
 
