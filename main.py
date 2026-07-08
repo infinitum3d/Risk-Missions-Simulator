@@ -2,10 +2,10 @@
 """
 Risk Missions Simulator
 
-Entry point for the application.
+Application entry point.
 """
 
-from risk_missions.constants import (
+from constants import (
     GAME_NAME,
     VERSION,
     TERRITORY_COUNT,
@@ -14,18 +14,16 @@ from risk_missions.constants import (
 )
 
 
-def main() -> None:
+def main():
     print("=" * 40)
     print(GAME_NAME)
     print(f"Version {VERSION}")
     print("=" * 40)
-    print()
     print(f"Territories : {TERRITORY_COUNT}")
     print(f"Players     : {PLAYER_COUNT}")
     print(f"Neutrals    : {NEUTRAL_COUNT}")
     print()
-    print("Project initialized successfully.")
-    print("Ready for Version 0.2.")
+    print("Initialization successful.")
 
 
 if __name__ == "__main__":
