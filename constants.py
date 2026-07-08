@@ -1,4 +1,4 @@
-```python
+
 """
 Global constants for the Risk Missions Simulator.
 """
@@ -24,4 +24,3 @@ WINNING_POINTS = 4
 
 MAX_ATTACK_DICE = 3
 MAX_DEFEND_DICE = 2
-```
