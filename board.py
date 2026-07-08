@@ -43,9 +43,14 @@ class Board:
     Stores every territory and its current game state.
     """
 
+    class Board:
+
     def __init__(self) -> None:
         self.territories: Dict[str, Territory] = {}
+        self.adjacency = {}
+
         self._initialize_board()
+        self._initialize_adjacency()
 
     # --------------------------------------------------
     # Territory management
@@ -150,62 +155,322 @@ class Board:
     def _initialize_board(self) -> None:
         """Create all 42 standard Risk territories."""
 
-        continents = {
-            "North America": [
+            # --------------------------------------------------
+    # Adjacency
+    # --------------------------------------------------
+
+    def _initialize_adjacency(self) -> None:
+        """
+        Create the complete standard Risk adjacency graph.
+        """
+
+        self.adjacency = {
+
+            # ---------------- North America ----------------
+
+            "Alaska": {
+                "Northwest Territory",
+                "Alberta",
+                "Kamchatka",
+            },
+
+            "Northwest Territory": {
+                "Alaska",
+                "Alberta",
+                "Ontario",
+                "Greenland",
+            },
+
+            "Greenland": {
+                "Northwest Territory",
+                "Ontario",
+                "Quebec",
+                "Iceland",
+            },
+
+            "Alberta": {
                 "Alaska",
                 "Northwest Territory",
+                "Ontario",
+                "Western United States",
+            },
+
+            "Ontario": {
+                "Northwest Territory",
                 "Greenland",
+                "Quebec",
+                "Eastern United States",
+                "Western United States",
                 "Alberta",
+            },
+
+            "Quebec": {
+                "Ontario",
+                "Greenland",
+                "Eastern United States",
+            },
+
+            "Western United States": {
+                "Alberta",
+                "Ontario",
+                "Eastern United States",
+                "Central America",
+            },
+
+            "Eastern United States": {
                 "Ontario",
                 "Quebec",
                 "Western United States",
-                "Eastern United States",
                 "Central America",
-            ],
-            "South America": [
+            },
+
+            "Central America": {
+                "Western United States",
+                "Eastern United States",
                 "Venezuela",
+            },
+
+            # ---------------- South America ----------------
+
+            "Venezuela": {
+                "Central America",
                 "Peru",
                 "Brazil",
+            },
+
+            "Peru": {
+                "Venezuela",
+                "Brazil",
                 "Argentina",
-            ],
-            "Europe": [
+            },
+
+            "Brazil": {
+                "Venezuela",
+                "Peru",
+                "Argentina",
+                "North Africa",
+            },
+
+            "Argentina": {
+                "Peru",
+                "Brazil",
+            },
+
+            # ---------------- Europe ----------------
+
+            "Iceland": {
+                "Greenland",
+                "Great Britain",
+                "Scandinavia",
+            },
+
+            "Scandinavia": {
+                "Iceland",
+                "Ukraine",
+                "Northern Europe",
+                "Great Britain",
+            },
+
+            "Ukraine": {
+                "Scandinavia",
+                "Northern Europe",
+                "Southern Europe",
+                "Ural",
+                "Afghanistan",
+                "Middle East",
+            },
+
+            "Great Britain": {
                 "Iceland",
                 "Scandinavia",
-                "Ukraine",
-                "Great Britain",
                 "Northern Europe",
                 "Western Europe",
+            },
+
+            "Northern Europe": {
+                "Great Britain",
+                "Scandinavia",
+                "Ukraine",
+                "Western Europe",
                 "Southern Europe",
-            ],
-            "Africa": [
+            },
+
+            "Western Europe": {
+                "Great Britain",
+                "Northern Europe",
+                "Southern Europe",
                 "North Africa",
+            },
+
+            "Southern Europe": {
+                "Western Europe",
+                "Northern Europe",
+                "Ukraine",
+                "Middle East",
+                "Egypt",
+                "North Africa",
+            },
+
+            # ---------------- Africa ----------------
+
+            "North Africa": {
+                "Brazil",
+                "Western Europe",
+                "Southern Europe",
                 "Egypt",
                 "East Africa",
                 "Congo",
+            },
+
+            "Egypt": {
+                "North Africa",
+                "Southern Europe",
+                "Middle East",
+                "East Africa",
+            },
+
+            "East Africa": {
+                "Egypt",
+                "North Africa",
+                "Middle East",
+                "Congo",
                 "South Africa",
                 "Madagascar",
-            ],
-            "Asia": [
-                "Ural",
+            },
+
+            "Congo": {
+                "North Africa",
+                "East Africa",
+                "South Africa",
+            },
+
+            "South Africa": {
+                "Congo",
+                "East Africa",
+                "Madagascar",
+            },
+
+            "Madagascar": {
+                "East Africa",
+                "South Africa",
+            },
+
+            # ---------------- Asia ----------------
+
+            "Ural": {
+                "Ukraine",
                 "Siberia",
+                "China",
+                "Afghanistan",
+            },
+
+            "Siberia": {
+                "Ural",
                 "Yakutsk",
+                "Irkutsk",
+                "Mongolia",
+                "China",
+            },
+
+            "Yakutsk": {
+                "Siberia",
                 "Kamchatka",
+                "Irkutsk",
+            },
+
+            "Kamchatka": {
+                "Yakutsk",
                 "Irkutsk",
                 "Mongolia",
                 "Japan",
-                "Afghanistan",
-                "Middle East",
-                "India",
-                "Siam",
+                "Alaska",
+            },
+
+            "Irkutsk": {
+                "Siberia",
+                "Yakutsk",
+                "Kamchatka",
+                "Mongolia",
+            },
+
+            "Mongolia": {
+                "Irkutsk",
+                "Kamchatka",
+                "Japan",
                 "China",
-            ],
-            "Australia": [
+                "Siberia",
+            },
+
+            "Japan": {
+                "Kamchatka",
+                "Mongolia",
+            },
+
+            "Afghanistan": {
+                "Ukraine",
+                "Ural",
+                "China",
+                "India",
+                "Middle East",
+            },
+
+            "Middle East": {
+                "Ukraine",
+                "Afghanistan",
+                "India",
+                "Southern Europe",
+                "Egypt",
+                "East Africa",
+            },
+
+            "India": {
+                "Middle East",
+                "Afghanistan",
+                "China",
+                "Siam",
+            },
+
+            "Siam": {
+                "India",
+                "China",
                 "Indonesia",
+            },
+
+            "China": {
+                "Ural",
+                "Siberia",
+                "Mongolia",
+                "Siam",
+                "India",
+                "Afghanistan",
+            },
+
+            # ---------------- Australia ----------------
+
+            "Indonesia": {
+                "Siam",
                 "New Guinea",
                 "Western Australia",
+            },
+
+            "New Guinea": {
+                "Indonesia",
+                "Western Australia",
                 "Eastern Australia",
-            ],
+            },
+
+            "Western Australia": {
+                "Indonesia",
+                "New Guinea",
+                "Eastern Australia",
+            },
+
+            "Eastern Australia": {
+                "Western Australia",
+                "New Guinea",
+            },
         }
+
 
         for continent, territories in continents.items():
             for territory in territories:
@@ -235,3 +500,27 @@ class Board:
                 for territory in self.territories.values()
             }
         )
+    # --------------------------------------------------
+    # Neighbor Queries
+    # --------------------------------------------------
+
+    def neighbors(self, territory: str) -> set[str]:
+        return self.adjacency[territory]
+
+    def are_adjacent(self, first: str, second: str) -> bool:
+        return second in self.adjacency[first]
+
+    def can_attack(self, attacker: str, defender: str) -> bool:
+        if not self.are_adjacent(attacker, defender):
+            return False
+
+        if self.owner(attacker) is None:
+            return False
+
+        if self.owner(defender) is None:
+            return False
+
+        if self.owner(attacker) == self.owner(defender):
+            return False
+
+        return self.armies(attacker) > 1
